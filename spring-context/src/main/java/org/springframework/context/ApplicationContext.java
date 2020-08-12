@@ -55,6 +55,16 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.BeanFactory
  * @see org.springframework.core.io.ResourceLoader
  */
+/*
+ * @Author wenzhenzhen
+ * 这就是大名鼎鼎的Spring容器，也叫做Spring应用上下文。是BeanFactory的升级扩展
+ *
+ * ApplicationContext与BeanFactory相比的主要区别：
+ * MessageSource：解析参数的接口，提供国际化的标准访问策略。
+ * ApplicationEventPublisher：封装时间发布功能，提供强大的事件机制
+ * ResourcePatternResolver：根据位置模式串匹配资源位置，并返回所有资源，扩展 ResourceLoader，可以用来加载多个 Resource，可以灵活访问不同的资源。
+ * 对WEB应用的支持
+ */
 public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory,
 		MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
 

@@ -37,6 +37,11 @@ import org.springframework.lang.Nullable;
  * @since 1.1
  * @see org.springframework.core.io.Resource
  */
+ /*
+  * @Author wenzhenzhen
+  * 读取Spring中配置文件的内容，并将其转换为Ioc容器内部的数据结构：BeanDefinition
+  * Spring 的配置文件：groovy，properties，XML
+  */
 public interface BeanDefinitionReader {
 
 	/**

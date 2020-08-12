@@ -49,6 +49,12 @@ import org.springframework.lang.Nullable;
  * @see ByteArrayResource
  * @see InputStreamResource
  */
+
+/*
+ * @Author wenzhenzhen
+ * Resource体系 对资源的抽象，每一个实现都代表一种对资源的访问策略，如：ClassPathResource,FileSystemResource,URLResource等
+ * 有了资源就应该有资源的加载，资源加载的统一接口:org.springframework.core.io.ResourceLoader
+ */
 public interface Resource extends InputStreamSource {
 
 	/**
