@@ -105,6 +105,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * @since 4.3
 	 * @see #getProtocolResolvers()
 	 */
+	// 自定义的ProtocolResolver通过DefaultResourceLoader.addProtocolResolver()加入Spring体系
 	public void addProtocolResolver(ProtocolResolver resolver) {
 		Assert.notNull(resolver, "ProtocolResolver must not be null");
 		this.protocolResolvers.add(resolver);
@@ -140,30 +141,39 @@ public class DefaultResourceLoader implements ResourceLoader {
 	}
 
 
+	/*
+	 * @Author wenzhenzhen
+	 * 封装资源加载策略
+	 */
 	@Override
 	public Resource getResource(String location) {
 		Assert.notNull(location, "Location must not be null");
 
+		//首先通过ProtocolResolver加载资源Resource，ProtocolResolver为用户自定义资源解决策略，在Spring中没有实现类，需要用户实现
+		//自定义的ProtocolResolver通过DefaultResourceLoader.addProtocolResolver()加入Spring体系
 		for (ProtocolResolver protocolResolver : this.protocolResolvers) {
 			Resource resource = protocolResolver.resolve(location, this);
 			if (resource != null) {
 				return resource;
 			}
 		}
-
+		//若资源路径以"/"开头，构造ClassPathContextResource
 		if (location.startsWith("/")) {
 			return getResourceByPath(location);
 		}
+		//若资源路径以"classpath:"开头，构造ClassPathResource
 		else if (location.startsWith(CLASSPATH_URL_PREFIX)) {
 			return new ClassPathResource(location.substring(CLASSPATH_URL_PREFIX.length()), getClassLoader());
 		}
 		else {
 			try {
+				// 将location构造为URL
 				// Try to parse the location as a URL...
 				URL url = new URL(location);
 				return (ResourceUtils.isFileURL(url) ? new FileUrlResource(url) : new UrlResource(url));
 			}
 			catch (MalformedURLException ex) {
+				// location无法解析为URL，进行资源定位加载
 				// No URL -> resolve as resource path.
 				return getResourceByPath(location);
 			}
@@ -180,6 +190,10 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * @see ClassPathResource
 	 * @see org.springframework.context.support.FileSystemXmlApplicationContext#getResourceByPath
 	 * @see org.springframework.web.context.support.XmlWebApplicationContext#getResourceByPath
+	 */
+	/*
+	 * @Author wenzhenzhen
+	 * FileSystemResourceLoader 重写此方法从文件系统加载资源并且返回FileSystemResource
 	 */
 	protected Resource getResourceByPath(String path) {
 		return new ClassPathContextResource(path, getClassLoader());

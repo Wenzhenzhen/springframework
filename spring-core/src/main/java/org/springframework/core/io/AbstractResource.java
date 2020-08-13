@@ -41,6 +41,11 @@ import org.springframework.util.ResourceUtils;
  * @author Juergen Hoeller
  * @since 28.12.2003
  */
+ /*
+  * @Author wenzhenzhen
+  * Resource接口的默认实现，实现了大多数公共实现
+  * 如果要实现自定义的Resource应该继承AbstractResource类而不是实现Resource接口
+  */
 public abstract class AbstractResource implements Resource {
 
 	/**
@@ -139,6 +144,10 @@ public abstract class AbstractResource implements Resource {
 	 * content length. Subclasses will almost always be able to provide
 	 * a more optimal version of this, e.g. checking a File length.
 	 * @see #getInputStream()
+	 */
+	/*
+	 * @Author wenzhenzhen
+	 * 返回资源的字节长度，通过全部读取一遍获取
 	 */
 	@Override
 	public long contentLength() throws IOException {
